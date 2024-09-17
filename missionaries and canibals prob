@@ -1,0 +1,27 @@
+from collections import deque
+
+def missionaries_and_cannibals():
+    queue = deque([(3, 3, 1, 0, 0, 0)])  # (M, C, B, m, c, b)
+    visited = set((3, 3, 1, 0, 0, 0))
+
+    while queue:
+        M, C, B, m, c, b = queue.popleft()
+
+        if M == 0 and C == 0 and B == 0:
+            return [(M, C, B, m, c, b)]
+
+        for a, b in [(1, 0), (2, 0), (0, 1), (0, 2), (1, 1)]:
+            next_M, next_C, next_B, next_m, next_c, next_b = M - a, C - b, 1 - B, m + a, c + b, B
+
+            if (next_M, next_C, next_B, next_m, next_c, next_b) not in visited and 0 <= next_M <= 3 and 0 <= next_C <= 3 and 0 <= next_B <= 1 and 0 <= next_m <= 3 and 0 <= next_c <= 3 and 0 <= next_b <= 1 and next_M >= next_C and next_m >= next_c:
+                queue.append((next_M, next_C, next_B, next_m, next_c, next_b))
+                visited.add((next_M, next_C, next_B, next_m, next_c, next_b))
+
+    return None
+
+solution = missionaries_and_cannibals()
+if solution:
+    for state in solution:
+        print(state)
+else:
+    print("No solution found")
